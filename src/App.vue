@@ -4,7 +4,7 @@
 
   - Add new todo
   - Hide/Show completed using computed function
-  - Passing props to child component
+  - Passing props to child component using passing by props or provider/injector
 
 
 -->
@@ -16,39 +16,17 @@ export default {
   components : {
     TodoItem
   },
+  // provide() {
+  //   return {
+  //     message : "Hi I come from parent component"
+  //   } 
+  // },
   data() {
+    // Initialize data state equivalent of [todos, setTodos] = useState([]) from React
     console.log("Data")
     return {
       todo : "",
-      todos : [{
-        id : 1,
-        name : "Todo 1",
-        isCompleted : false
-      },{
-        id : 2,
-        name : "Todo 2",
-        isCompleted : true
-      },{
-        id : 3,
-        name : "Todo 3",
-        isCompleted : false
-      },{
-        id : 4,
-        name : "Todo 4",
-        isCompleted : false
-      },{
-        id : 5,
-        name : "Todo 5",
-        isCompleted : true
-      },{
-        id : 6,
-        name : "Todo 6",
-        isCompleted : false
-      },{
-        id : 7,
-        name : "Todo 7",
-        isCompleted : false
-      }],
+      todos : [],
       hideCompleted : false
     }
   },
@@ -69,6 +47,7 @@ export default {
         isCompleted : false
       })
       this.todo = ""
+      localStorage.setItem("todos", JSON.stringify(this.todos))
       }
     },
 
@@ -79,9 +58,17 @@ export default {
         }
         return todo
       })
+      localStorage.setItem("todos", JSON.stringify(this.todos))
     },
     onHideCompleted(){
       this.hideCompleted = !this.hideCompleted
+    }
+  },
+  mounted(){
+    // Mounted = run when the component is mounted equivalent of Effect(()=>{}, []) from React
+    let todos = localStorage.getItem("todos")
+    if(todos){
+      this.todos = JSON.parse(todos)
     }
   }
 }
